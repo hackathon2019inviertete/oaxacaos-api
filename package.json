@@ -1,0 +1,24 @@
+{
+  "name": "oaxacos-api",
+  "version": "1.0.0",
+  "description": "API del proyecto de tránsito para la hackathon de La Salle 2019",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hackathon2019inviertete/oaxacos-api.git"
+  },
+  "keywords": [
+    "Hackathon",
+    "Node",
+    "Routes"
+  ],
+  "author": "Inviértete",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hackathon2019inviertete/oaxacos-api/issues"
+  },
+  "homepage": "https://github.com/hackathon2019inviertete/oaxacos-api#readme"
+}
