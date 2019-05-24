@@ -7,7 +7,8 @@ const mongoose = require('mongoose')
 const AdminSchema = new mongoose.Schema({
   email: String,
   password: String,
-  name: String
+  name: String,
+  state: Number
 })
 
 //exportar el modelo
