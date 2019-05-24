@@ -22,7 +22,7 @@ function generateToken(id, permissions) {
 }
 
 // Ruta para registrar a un usuario
-router.post('/user', async function (req, res, next) {
+router.post('/user/sign-up', async function (req, res, next) {
   // Obtener atributos del request
   const email = req.body.email
   const password = req.body.password
