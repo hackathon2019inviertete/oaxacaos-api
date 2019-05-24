@@ -3,10 +3,23 @@
 // Importar dependencias
 const express = require('express')
 const bcrypt = require('bcrypt')
+const jwt = require('express-jwt')
+const auth = require('../helper/auth')
+const guard = require('express-jwt-permissions')()
 const User = require('../models/User')
 
 // Crear router de express
 const router = express.Router()
+
+// Función para generar un token
+function generateToken(id, permissions) {
+  return auth.signToken({
+    auth: {
+      id
+    },
+    permissions
+  }, auth.config.secret)
+}
 
 // Ruta para registrar a un usuario
 router.post('/user', async function (req, res, next) {
@@ -25,6 +38,12 @@ router.post('/user', async function (req, res, next) {
         email,
         password: encryptedPassword
       })
+
+      // Crear token del usuario
+      const token = generateToken(user._id, ['user:normal'])
+
+      // Configurar token en el header
+      res.setHeader('x-auth-token', token)
 
       // Regresar usuario
       res.send(user)
