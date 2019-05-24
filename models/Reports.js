@@ -2,11 +2,9 @@
 
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Schema.Types.ObjectId
-
-
 const ReportSchema = new mongoose.Schema({
   report_type:{
-    type: Number, 
+   type: Number, 
     required: true
   },
 
@@ -21,17 +19,15 @@ const ReportSchema = new mongoose.Schema({
     longitude: {
       type: Number,
       required: true
-    },
-    user_id:{
-      type:{
-        user_id: ObjectId,
-        require: true
-      }
     }
   },
-
+  user_id:{
+    type:{
+      user_id: ObjectId,
+      require: true
+    }
+  },
 },
-
 {
   timestamps: {
     createdAt: 'created_at',
