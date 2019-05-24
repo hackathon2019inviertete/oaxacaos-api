@@ -28,6 +28,12 @@ const DenunciaSchema = new mongoose.Schema({
   record_audio_url: {
     type: String,
     required: true
+  },
+  status: {
+    type: Number,
+    enum: [0, 1, 2], // 0: pendiente 1: en revisión 2: resuelto
+    required: true,
+    default: 0
   }
 },
   {

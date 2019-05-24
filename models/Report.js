@@ -31,6 +31,12 @@ const ReportSchema = new mongoose.Schema({
       require: true
     }
   },
+  status: {
+    type: Number,
+    enum: [0, 1, 2], // 0: pendiente 1: en revisión 2: resuelto
+    required: true,
+    default: 0
+  }
 },
   {
     timestamps: {
