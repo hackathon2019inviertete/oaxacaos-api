@@ -30,6 +30,17 @@ UserSchema.statics.create = async function (userData) {
   }
 }
 
+UserSchema.statics.findByEmail = async function (email) {
+  // Buscar si hay un usuario existente
+  const foundUser = await User.findOne({ email })
+
+  if (foundUser) {
+    return foundUser
+  } else {
+    throw new Error('No exite un usuario registrado con ese email.')
+  }
+}
+
 // Exportar modelo User
 const User = mongoose.model('user', UserSchema)
 module.exports = User
