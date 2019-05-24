@@ -18,8 +18,15 @@ UserSchema.statics.create = async function (userData) {
     throw new Error('Ya hay un usuario registrado con ese email.')
   } else {
     // Crear un nuevo usuario
-    const createdUser = new User(userData)
-    return createdUser.save()
+    let createdUser = new User(userData)
+
+    // Guardar usuario
+    await createdUser.save()
+
+    // Eliminar contraseña
+    delete createdUser._doc.password
+
+    return createdUser._doc
   }
 }
 
