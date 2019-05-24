@@ -39,8 +39,9 @@ app.use((err, req, res, next) => {
 async function start() {
   try {
     // Conectarse a la base de datos
-    mongoose.connect(process.env.DATABASE_URL)
-    // Inicializar aplicación de vue
+    await mongoose.connect(process.env.DATABASE_URL)
+
+    // Inicializar aplicación de express
     app.listen(process.env.PORT || 3000, () => {
       console.log('Conexión a la base de datos establecida')
     })

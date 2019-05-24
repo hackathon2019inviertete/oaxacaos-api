@@ -45,5 +45,23 @@ ReportSchema.statics.create = async function (reportData) {
   return createdReport.save()
 }
 
+ReportSchema.statics.findNearby = async function (latitude, longitude) {
+  return Report.find({
+    location: {
+      $near: {
+        $maxDistance: 1000,
+        $geometry: {
+          type: 'Point',
+          coordinates: [longitude, latitude]
+        }
+      }
+    }
+  })
+}
+
+
+// Configurar index para la localización
+ReportSchema.index({ location: "2dsphere" })
+
 const Report = mongoose.model('report', ReportSchema)
 module.exports = Report
