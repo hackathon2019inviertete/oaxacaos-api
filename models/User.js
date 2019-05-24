@@ -9,6 +9,11 @@ const UserSchema = new mongoose.Schema({
     password: String
 })
 
+// Configurar función para crear un usuario
+UserSchema.statics.create = async function (userData) {
+    const User = new UserSchema(userData)
+    return await User.save()
+}
 
 // Exportar modelo User
 const User = mongoose.model('user', UserSchema)
