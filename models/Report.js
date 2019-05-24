@@ -66,7 +66,12 @@ ReportSchema.statics.findNearby = async function (latitude, longitude) {
 }
 
 ReportSchema.statics.updateStatus = async function (reportId, newStatus) {
-  return Report.update({ _id: reportId }, { status: newStatus })
+  try {
+    // Actualizar reporte
+    return Report.update({ _id: reportId }, { status: newStatus })
+  } catch (err) {
+    throw err
+  }
 }
 
 // Configurar index para la localización
