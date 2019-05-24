@@ -4,7 +4,11 @@
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const express = require('express')
+const bodyParser = require('body-parser')
 const asyncify = require('express-asyncify')
+
+// Importar rutas
+const AuthRouter = require('./routes/auth')
 
 // Configurar variables de entorno
 if (!process.env.PRODUCTION) {
@@ -13,9 +17,13 @@ if (!process.env.PRODUCTION) {
 
 // Crear app de express
 const app = asyncify(express())
+app.use(bodyParser.json())
+
+// Configurar rutas
+app.use('/api/auth', AuthRouter)
 
 // Función para iniciar la aplicación
-async function start () {
+async function start() {
   try {
     // Conectarse a la base de datos
     mongoose.connect(process.env.DATABASE_URL)
