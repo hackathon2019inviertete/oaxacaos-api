@@ -37,5 +37,25 @@ const DenunciaSchema = new mongoose.Schema({
     }
   })
 
-const Report = mongoose.model('report', ReportSchema)
-module.exports = Report
+
+// Método para obtener las denuncias cerca
+DenunciaSchema.statics.findNearby = async function (latitude, longitude) {
+  return Report.find({
+    location: {
+      $near: {
+        $maxDistance: 1000,
+        $geometry: {
+          type: 'Point',
+          coordinates: [longitude, latitude]
+        }
+      }
+    }
+  })
+}
+
+
+// Configurar index para la localización
+DenunciaSchema.index({ location: "2dsphere" })
+
+const Denuncia = mongoose.model('denuncia', DenunciaSchema)
+module.exports = Denuncia

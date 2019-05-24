@@ -5,6 +5,7 @@ const express = require('express')
 const jwt = require('express-jwt')
 const auth = require('../helper/auth')
 const Report = require('../models/Report')
+const Denuncia = require('../models/Denuncia')
 
 // Crear Router de express
 const router = express.Router()
@@ -57,12 +58,15 @@ router.get('/nearby', jwt(auth.config), async function (req, res, next) {
     // Obtener reportes
     const reports = await Report.findNearby(latitude, longitude)
     // Obtener denuncias
+    const denuncias = await Denuncia.findNearby(latitude, longitude)
 
     // Revisar si el usuario es normal o admin
     if (permissions[0] == 'user:normal') {
+      // Enviar reportes
       res.send(reports)
     } else if (permissions[0] == 'admin:normal') {
-
+      // Enviar reportes y denuncias
+      res.send(reports.concat(denuncias))
     }
   } else {
     // Enviar mensaje de error al usuario
