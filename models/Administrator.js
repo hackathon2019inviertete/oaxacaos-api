@@ -11,7 +11,7 @@ const AdminSchema = new mongoose.Schema({
   },
 
   password:{
-    type: Number,
+    type: String,
     require: true
   },
 
@@ -38,10 +38,30 @@ AdminSchema.statics.create = async function (AdminData) {
     throw new Error('Ya hay un usuario registrado con ese email.')
   } else {
     // Crear un nuevo usuario
-    const createdAdmin = new User(AdminData)
-    return createdAdmin.save()
+    let createdAdmin = new Admin(AdminData)
+
+    // Guardar usuario
+    await createdAdmin.save()
+
+    // Elimina contraseña
+    delete createdAdmin._doc.password
+
+
+    return createdAdmin._doc
   }
 }
+
+AdminSchema.statics.findByEmail = async function (email) {
+  // Buscar si hay un usuario existente
+  const foundAdmin = await Admin.findOne({ email })
+
+  if (foundAdmin) {
+    return foundAdmin
+  } else {
+    throw new Error('No exite un usuario registrado con ese email.')
+  }
+}
+
 
 //exportar el modelo
 const Admin = mongoose.model('admin', AdminSchema)
