@@ -54,11 +54,15 @@ router.get('/nearby', jwt(auth.config), async function (req, res, next) {
 
   if (latitude, longitude, userId) {
     console.log(req.user.permissions)
+    // Obtener reportes
+    const reports = await Report.findNearby(latitude, longitude)
+    // Obtener denuncias
+
     // Revisar si el usuario es normal o admin
     if (permissions[0] == 'user:normal') {
-      // Obtener y regresar reportes
-      const reports = await Report.findNearby(latitude, longitude)
       res.send(reports)
+    } else if (permissions[0] == 'admin:normal') {
+
     }
   } else {
     // Enviar mensaje de error al usuario
