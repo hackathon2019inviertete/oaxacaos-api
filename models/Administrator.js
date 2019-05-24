@@ -27,8 +27,21 @@ const AdminSchema = new mongoose.Schema({
     createdAt: 'created_at',
     updatedAt: 'updated_at'
   }
+})
+
+// Configurar función para crear un usuario administrador
+AdminSchema.statics.create = async function (AdminData) {
+  // Buscar si hay un administrador existente
+  const foundAdmin = await Admin.findOne({ email: AdminData.email })
+
+  if (foundAdmin) {
+    throw new Error('Ya hay un usuario registrado con ese email.')
+  } else {
+    // Crear un nuevo usuario
+    const createdAdmin = new User(AdminData)
+    return createdAdmin.save()
+  }
 }
-)
 
 //exportar el modelo
 const Admin = mongoose.model('admin', AdminSchema)
