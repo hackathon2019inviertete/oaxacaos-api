@@ -5,14 +5,14 @@ const mongoose = require('mongoose')
 
 // Crear Schema para el usuario
 const UserSchema = new mongoose.Schema({
-    email: String,
-    password: String
+  email: String,
+  password: String
 })
 
 // Configurar función para crear un usuario
 UserSchema.statics.create = async function (userData) {
-    const User = new UserSchema(userData)
-    return await User.save()
+  const User = new UserSchema(userData)
+  return User.save()
 }
 
 // Exportar modelo User
