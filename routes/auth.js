@@ -111,7 +111,7 @@ router.post('/admin/sign-up', async function (req, res, next) {
       })
 
       // Crear token del admin
-      const token = generateToken(admin._id, ['admin:normal'])
+      const token = generateToken(admin._id, ['user:admin'])
 
       // Configurar token en el header
       res.setHeader('x-auth-token', token)
@@ -143,7 +143,7 @@ router.post('/admin/sign-in', async function (req, res, next) {
 
       if (bcrypt.compareSync(password, foundAdmin.password)) {
         // Crear token del usuario
-        const token = generateToken(foundAdmin._id, ['admin:normal'])
+        const token = generateToken(foundAdmin._id, ['user:admin'])
 
         // Configurar token en el header
         res.setHeader('x-auth-token', token)
