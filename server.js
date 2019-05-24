@@ -22,6 +22,17 @@ app.use(bodyParser.json())
 // Configurar rutas
 app.use('/api/auth', AuthRouter)
 
+// Configurar error handler
+app.use((err, req, res, next) => {
+  // Configurar el status del error
+  res.status(err.status || 500)
+
+  // Enviar el error como JSON
+  res.json({
+    error: err.message
+  })
+})
+
 // Función para iniciar la aplicación
 async function start() {
   try {

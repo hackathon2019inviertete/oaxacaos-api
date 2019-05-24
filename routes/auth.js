@@ -15,17 +15,21 @@ router.post('/user', async function (req, res, next) {
 
   // Verificar que se encuentren los atributos
   if (email && password) {
-    // Crear usuario
-    const user = await User.create({
-      email,
-      password
-    })
+    try {
+      // Crear usuario
+      const user = await User.create({
+        email,
+        password
+      })
 
-    // Regresar usuario
-    res.send(user)
+      // Regresar usuario
+      res.send(user)
+    } catch (err) {
+      next(err)
+    }
   } else {
     // Enviar mensaje de error al usuario
-    res.status(500).send({
+    res.status(500).json({
       message: 'No pudimos completar la petición porque faltan datos.'
     })
   }

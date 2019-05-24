@@ -11,8 +11,16 @@ const UserSchema = new mongoose.Schema({
 
 // Configurar función para crear un usuario
 UserSchema.statics.create = async function (userData) {
-  const createdUser = new User(userData)
-  return createdUser.save()
+  // Buscar si hay un usuario existente
+  const foundUser = await User.findOne({ email: userData.email })
+
+  if (foundUser) {
+    throw new Error('Ya hay un usuario registrado con ese email.')
+  } else {
+    // Crear un nuevo usuario
+    const createdUser = new User(userData)
+    return createdUser.save()
+  }
 }
 
 // Exportar modelo User
