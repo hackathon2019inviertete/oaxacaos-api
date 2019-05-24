@@ -2,6 +2,7 @@
 
 // Importar dependencias
 const express = require('express')
+const bcrypt = require('bcrypt')
 const User = require('../models/User')
 
 // Crear router de express
@@ -15,11 +16,14 @@ router.post('/user', async function (req, res, next) {
 
   // Verificar que se encuentren los atributos
   if (email && password) {
+    // Encriptar contraseña
+    const encryptedPassword = bcrypt.hashSync(password, 10)
+
     try {
       // Crear usuario
       const user = await User.create({
         email,
-        password
+        password: encryptedPassword
       })
 
       // Regresar usuario
