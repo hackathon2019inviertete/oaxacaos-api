@@ -6,11 +6,13 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 const ReportSchema = new mongoose.Schema({
   report_type: {
     type: Number,
-    required: true
+    required: true,
+    enum: [0, 1, 2, 3]
   },
-
   likes: {
-    type: Number
+    type: Number,
+    required: true,
+    default: 0
   },
   location: {
     latitude: {
@@ -35,6 +37,12 @@ const ReportSchema = new mongoose.Schema({
       updatedAt: 'updated_at'
     }
   })
+
+// Configurar función para crear un usuario
+ReportSchema.statics.create = async function (reportData) {
+  const createdReport = new Report(reportData)
+  return createdReport.save()
+}
 
 const Report = mongoose.model('report', ReportSchema)
 module.exports = Report

@@ -9,6 +9,7 @@ const asyncify = require('express-asyncify')
 
 // Importar rutas
 const AuthRouter = require('./routes/auth')
+const ReportsRouter = require('./routes/reports')
 
 // Configurar variables de entorno
 if (!process.env.PRODUCTION) {
@@ -21,6 +22,7 @@ app.use(bodyParser.json())
 
 // Configurar rutas
 app.use('/api/auth', AuthRouter)
+app.use('/api/reports', ReportsRouter)
 
 // Configurar error handler
 app.use((err, req, res, next) => {
