@@ -25,8 +25,7 @@ router.post('/', jwt(auth.config), async function (req, res, next) {
       const report = await Report.create({
         report_type,
         location: {
-          latitude,
-          longitude
+          coordinates: [latitude, longitude]
         },
         user_id
       })

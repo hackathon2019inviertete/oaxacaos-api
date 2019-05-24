@@ -15,12 +15,13 @@ const ReportSchema = new mongoose.Schema({
     default: 0
   },
   location: {
-    latitude: {
-      type: Number,
-      required: true
+    type: {
+      type: String,
+      required: true,
+      default: "Point"
     },
-    longitude: {
-      type: Number,
+    coordinates: {
+      type: [Number],
       required: true
     }
   },
