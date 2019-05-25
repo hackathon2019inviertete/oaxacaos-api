@@ -18,6 +18,28 @@ const mapsClient = maps.createClient({
   Promise: Promise
 })
 
+// Actualizar el status de un reporte
+// Sólo los administradores pueden acceder a esta ruta
+router.post('/:id/update-status', jwt(auth.config), guard.check(['admin:normal']), async function (req, res, next) {
+  // Obtener propiedades
+  const newStatus = req.body.status
+
+  if (newStatus) {
+    try {
+      // Actualizar y regresar reporte
+      const result = await Report.updateStatus(req.params.id, newStatus)
+      res.send(result)
+    } catch (err) {
+      res.next(err)
+    }
+  } else {
+    // Enviar mensaje de error al usuario
+    res.status(500).json({
+      message: 'No pudimos completar la petición porque faltan datos.'
+    })
+  }
+})
+
 // Obtener los reportes al rededor de un punto
 // El resultado de los reportes varía si el usuario es administrador
 router.get('/nearby', jwt(auth.config), async function (req, res, next) {
@@ -45,28 +67,6 @@ router.get('/nearby', jwt(auth.config), async function (req, res, next) {
     } else if (permissions[0] == 'user:admin') {
       // Enviar reportes y denuncias
       res.send(reports.concat(denuncias))
-    }
-  } else {
-    // Enviar mensaje de error al usuario
-    res.status(500).json({
-      message: 'No pudimos completar la petición porque faltan datos.'
-    })
-  }
-})
-
-// Actualizar el status de un reporte
-// Sólo los administradores pueden acceder a esta ruta
-router.post('/:id/update-status', jwt(auth.config), guard.check(['admin:normal']), async function (req, res, next) {
-  // Obtener propiedades
-  const newStatus = req.body.status
-
-  if (newStatus) {
-    try {
-      // Actualizar y regresar reporte
-      const result = await Report.updateStatus(req.params.id, newStatus)
-      res.send(result)
-    } catch (err) {
-      res.next(err)
     }
   } else {
     // Enviar mensaje de error al usuario
