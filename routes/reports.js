@@ -20,7 +20,7 @@ const mapsClient = maps.createClient({
 
 // Actualizar el status de un reporte
 // Sólo los administradores pueden acceder a esta ruta
-router.post('/:id/status', jwt(auth.config), guard.check(['admin:normal']), async function (req, res, next) {
+router.post('/:id/status', jwt(auth.config), guard.check(['user:admin']), async function (req, res, next) {
   // Obtener propiedades
   const newStatus = req.body.status
 
