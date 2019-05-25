@@ -56,7 +56,7 @@ ReportSchema.statics.create = async function (reportData) {
 }
 
 ReportSchema.statics.findNearby = async function (latitude, longitude) {
-  return ReportSchema.find({
+  return Report.find({
     location: {
       $near: {
         $maxDistance: 1000,
