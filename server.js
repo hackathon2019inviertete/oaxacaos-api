@@ -7,22 +7,27 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const asyncify = require('express-asyncify')
 
-// Importar rutas
-const AuthRouter = require('./routes/auth')
-const ReportsRouter = require('./routes/reports')
-
 // Configurar variables de entorno
 if (!process.env.PRODUCTION) {
   dotenv.config()
 }
 
+// Importar rutas
+const AuthRouter = require('./routes/auth')
+const ReportsRouter = require('./routes/reports')
+const DenunciasRouter = require('./routes/denuncia')
+
 // Crear app de express
 const app = asyncify(express())
+
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // Configurar rutas
 app.use('/api/auth', AuthRouter)
 app.use('/api/reports', ReportsRouter)
+app.use('/api/denuncias', DenunciasRouter)
 
 // Configurar error handler
 app.use((err, req, res, next) => {

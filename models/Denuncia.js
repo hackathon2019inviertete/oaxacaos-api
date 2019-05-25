@@ -4,10 +4,6 @@ const mongoose = require('mongoose')
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const DenunciaSchema = new mongoose.Schema({
-  denuncia_type: {
-    type: Number,
-    required: true
-  },
   location: {
     type: {
       type: String,
