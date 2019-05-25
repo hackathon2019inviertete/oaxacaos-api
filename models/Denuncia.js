@@ -46,7 +46,7 @@ const DenunciaSchema = new mongoose.Schema({
 
 // Método para obtener las denuncias cerca
 DenunciaSchema.statics.findNearby = async function (latitude, longitude) {
-  return Report.find({
+  return Denuncia.find({
     location: {
       $near: {
         $maxDistance: 1000,
