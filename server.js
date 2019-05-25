@@ -12,11 +12,6 @@ if (!process.env.PRODUCTION) {
   dotenv.config()
 }
 
-// Importar rutas
-const AuthRouter = require('./routes/auth')
-const ReportsRouter = require('./routes/reports')
-const DenunciasRouter = require('./routes/denuncia')
-
 // Crear app de express
 const app = asyncify(express())
 
@@ -29,7 +24,14 @@ app.use((req, res, next) => {
   next()
 })
 
+// Configurar middleware
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+// Importar rutas
+const AuthRouter = require('./routes/auth')
+const ReportsRouter = require('./routes/reports')
+const DenunciasRouter = require('./routes/denuncia')
 
 // Configurar rutas
 app.use('/api/auth', AuthRouter)
