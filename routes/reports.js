@@ -71,8 +71,8 @@ router.post('/', jwt(auth.config), async function (req, res, next) {
 // El resultado de los reportes varía si el usuario es administrador
 router.get('/nearby', jwt(auth.config), async function (req, res, next) {
   // Obtener propiedades
-  const latitude = parseFloat(req.query.latitude)
-  const longitude = parseFloat(req.query.longitude)
+  const latitude = req.query.latitude
+  const longitude = req.query.longitude
   const userId = req.user.auth.id
   const permissions = req.user.permissions
 
