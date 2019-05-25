@@ -27,6 +27,11 @@ router.post('/', jwt(auth.config), async function (req, res, next) {
   const longitude = req.body.longitude
   const user_id = req.user.auth.id
 
+  console.log(report_type)
+  console.log(latitude)
+  console.log(longitude)
+  console.log(user_id)
+
   // Verificar que existan los datos
   if (report_type && latitude && longitude && user_id) {
     let address
