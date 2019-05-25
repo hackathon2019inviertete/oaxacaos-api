@@ -68,7 +68,7 @@ router.post('/', jwt(auth.config), async function (req, res, next) {
 })
 
 // Obtener un reporte por su id
-router.get('/:id', jwt(auth.guard), async function (req, res, next) {
+router.get('/:id', jwt(auth.config), async function (req, res, next) {
   try {
     const report = await Report.findById(req.params.id)
     res.send(report)
