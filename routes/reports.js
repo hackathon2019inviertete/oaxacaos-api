@@ -126,12 +126,12 @@ router.get('/nearby', jwt(auth.config), async function (req, res, next) {
   const userId = req.user.auth.id
   const permissions = req.user.permissions
 
+  console.log('******************')
+  console.log(req.user.permissions)
+  console.log(latitude)
+  console.log(longitude)
+  console.log('******************')
   if (latitude, longitude, userId) {
-    console.log('******************')
-    console.log(req.user.permissions)
-    console.log(latitude)
-    console.log(longitude)
-    console.log('******************')
     // Obtener reportes
     const reports = await Report.findNearby(latitude, longitude)
     // Obtener denuncias
