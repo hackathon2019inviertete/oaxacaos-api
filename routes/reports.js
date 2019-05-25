@@ -54,6 +54,28 @@ router.get('/nearby', jwt(auth.config), async function (req, res, next) {
   }
 })
 
+// Actualizar el status de un reporte
+// Sólo los administradores pueden acceder a esta ruta
+router.post('/:id/update-status', jwt(auth.config), guard.check(['admin:normal']), async function (req, res, next) {
+  // Obtener propiedades
+  const newStatus = req.body.status
+
+  if (newStatus) {
+    try {
+      // Actualizar y regresar reporte
+      const result = await Report.updateStatus(req.params.id, newStatus)
+      res.send(result)
+    } catch (err) {
+      res.next(err)
+    }
+  } else {
+    // Enviar mensaje de error al usuario
+    res.status(500).json({
+      message: 'No pudimos completar la petición porque faltan datos.'
+    })
+  }
+})
+
 // Ruta para crear un nuevo reporte
 // Sólo los usuarios registrados pueden acceder a esta ruta
 router.post('/', jwt(auth.config), async function (req, res, next) {
@@ -110,28 +132,6 @@ router.get('/:id', jwt(auth.config), async function (req, res, next) {
     res.send(report)
   } catch (err) {
     next(err)
-  }
-})
-
-// Actualizar el status de un reporte
-// Sólo los administradores pueden acceder a esta ruta
-router.post('/:id/update-status', jwt(auth.config), guard.check(['admin:normal']), async function (req, res, next) {
-  // Obtener propiedades
-  const newStatus = req.body.status
-
-  if (newStatus) {
-    try {
-      // Actualizar y regresar reporte
-      const result = await Report.updateStatus(req.params.id, newStatus)
-      res.send(result)
-    } catch (err) {
-      res.next(err)
-    }
-  } else {
-    // Enviar mensaje de error al usuario
-    res.status(500).json({
-      message: 'No pudimos completar la petición porque faltan datos.'
-    })
   }
 })
 
