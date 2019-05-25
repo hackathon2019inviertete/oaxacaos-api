@@ -30,8 +30,6 @@ app.use((req, res, next) => {
 })
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded())
-app.use(bodyParser.urlencoded({ extended: true }))
 
 // Configurar rutas
 app.use('/api/auth', AuthRouter)
