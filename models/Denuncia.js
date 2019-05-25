@@ -49,7 +49,7 @@ DenunciaSchema.statics.findNearby = async function (latitude, longitude) {
   return Denuncia.find({
     location: {
       $near: {
-        $maxDistance: 1000,
+        $maxDistance: 10000,
         $geometry: {
           type: 'Point',
           coordinates: [longitude, latitude]
