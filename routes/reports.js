@@ -67,6 +67,16 @@ router.post('/', jwt(auth.config), async function (req, res, next) {
   }
 })
 
+// Obtener un reporte por su id
+router.get('/:id', jwt(auth.guard), async function (req, res, next) {
+  try {
+    const report = await Report.findById(req.params.id)
+    res.send(report)
+  } catch (err) {
+    next(err)
+  }
+})
+
 // Obtener los reportes al rededor de un punto
 // El resultado de los reportes varía si el usuario es administrador
 router.get('/nearby', jwt(auth.config), async function (req, res, next) {
