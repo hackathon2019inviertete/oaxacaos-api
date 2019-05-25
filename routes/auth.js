@@ -95,77 +95,79 @@ router.post('/user/sign-in', async function (req, res, next) {
   }
 }),
 
-// Ruta para registrar a un administrador
-router.post('/admin/sign-up', async function (req, res, next) {
-  // Obtener atributos del request
-  const email = req.body.email
-  const password = req.body.password
+  // Ruta para registrar a un administrador
+  router.post('/admin/sign-up', async function (req, res, next) {
+    // Obtener atributos del request
+    const name = req.body.name
+    const email = req.body.email
+    const password = req.body.password
 
-  // Verificar que se encuentren los atributos
-  if (email && password) {
-    try {
-      // Crear administrador
-      const admin = await Admin.create({
-        email,
-        password: bcrypt.hashSync(password, 10)
-      })
+    // Verificar que se encuentren los atributos
+    if (email && password) {
+      try {
+        // Crear administrador
+        const admin = await Admin.create({
+          name,
+          email,
+          password: bcrypt.hashSync(password, 10)
+        })
 
-      // Crear token del admin
-      const token = generateToken(admin._id, ['user:admin'])
-
-      // Configurar token en el header
-      res.setHeader('x-auth-token', token)
-
-      // Regresar admin
-      res.send(admin)
-    } catch (err) {
-      next(err)
-    }
-  } else {
-    // Enviar mensaje de error al admin
-    res.status(500).json({
-      message: 'No pudimos completar la petición porque faltan datos.'
-    })
-  }
-}),
-
-// Ruta para iniciar sesión como admin
-router.post('/admin/sign-in', async function (req, res, next) {
-  // Obtener atributos del request
-  const email = req.body.email
-  const password = req.body.password
-
-  // Verificar que se encuentren los atributos
-  if (email && password) {
-    try {
-      // Obtener admin
-      const foundAdmin = await Admin.findByEmail(email)
-
-      if (bcrypt.compareSync(password, foundAdmin.password)) {
-        // Crear token del usuario
-        const token = generateToken(foundAdmin._id, ['user:admin'])
+        // Crear token del admin
+        const token = generateToken(admin._id, ['user:admin'])
 
         // Configurar token en el header
         res.setHeader('x-auth-token', token)
 
         // Regresar admin
-        delete foundAdmin._doc.password
-        res.send(foundAdmin)
-      } else {
-        // Enviar un mensaje de error
-        res.status(500).json({
-          message: 'Contraseña incorrecta.'
-        })
+        res.send(admin)
+      } catch (err) {
+        next(err)
       }
-    } catch (err) {
-      next(err)
+    } else {
+      // Enviar mensaje de error al admin
+      res.status(500).json({
+        message: 'No pudimos completar la petición porque faltan datos.'
+      })
     }
-  } else {
-    // Enviar mensaje de error al usuario
-    res.status(500).json({
-      message: 'No pudimos completar la petición porque faltan datos.'
-    })
-  }
-})
+  }),
+
+  // Ruta para iniciar sesión como admin
+  router.post('/admin/sign-in', async function (req, res, next) {
+    // Obtener atributos del request
+    const email = req.body.email
+    const password = req.body.password
+
+    // Verificar que se encuentren los atributos
+    if (email && password) {
+      try {
+        // Obtener admin
+        const foundAdmin = await Admin.findByEmail(email)
+
+        if (bcrypt.compareSync(password, foundAdmin.password)) {
+          // Crear token del usuario
+          const token = generateToken(foundAdmin._id, ['user:admin'])
+
+          // Configurar token en el header
+          res.setHeader('x-auth-token', token)
+
+          // Regresar admin
+          delete foundAdmin._doc.password
+          res.send(foundAdmin)
+        } else {
+          // Enviar un mensaje de error
+          res.status(500).json({
+            message: 'Contraseña incorrecta.'
+          })
+        }
+      } catch (err) {
+        next(err)
+      }
+    } else {
+      // Enviar mensaje de error al usuario
+      res.status(500).json({
+        message: 'No pudimos completar la petición porque faltan datos.'
+      })
+    }
+  })
 
 module.exports = router

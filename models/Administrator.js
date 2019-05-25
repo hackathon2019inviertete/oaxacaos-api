@@ -5,29 +5,27 @@ const mongoose = require('mongoose')
 
 //Crear un esquema para el modelo administrador
 const AdminSchema = new mongoose.Schema({
-  email:{
+  email: {
     type: String,
     require: true
   },
 
-  password:{
+  password: {
     type: String,
     require: true
   },
-
   name: {
     type: String,
     require: true
   },
-
   state: Number
 },
-{
-  timestamps: {
-    createdAt: 'created_at',
-    updatedAt: 'updated_at'
-  }
-})
+  {
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    }
+  })
 
 // Configurar función para crear un usuario administrador
 AdminSchema.statics.create = async function (AdminData) {
