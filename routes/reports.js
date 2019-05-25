@@ -24,6 +24,8 @@ router.post('/:id/status', jwt(auth.config), guard.check(['user:admin']), async 
   // Obtener propiedades
   const newStatus = req.body.status
 
+  console.log(newStatus)
+
   if (newStatus) {
     try {
       // Actualizar y regresar reporte
