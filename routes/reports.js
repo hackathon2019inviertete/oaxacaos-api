@@ -91,7 +91,7 @@ router.get('/nearby', jwt(auth.config), async function (req, res, next) {
     if (permissions[0] == 'user:normal') {
       // Enviar reportes
       res.send(reports)
-    } else if (permissions[0] == 'admin:normal') {
+    } else if (permissions[0] == 'user:admin') {
       // Enviar reportes y denuncias
       res.send(reports.concat(denuncias))
     }
