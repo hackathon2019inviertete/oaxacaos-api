@@ -46,8 +46,10 @@ async function start() {
     // Conectarse a la base de datos
     await mongoose.connect(process.env.DATABASE_URL)
 
+    const port = process.env.PORT || 3000
+
     // Inicializar aplicación de express
-    app.listen(process.env.PORT || 3000, () => {
+    app.listen(port, () => {
       console.log('Conexión a la base de datos establecida')
     })
   } catch (err) {
