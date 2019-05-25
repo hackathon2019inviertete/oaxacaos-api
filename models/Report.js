@@ -10,9 +10,9 @@ const ReportSchema = new mongoose.Schema({
     enum: [0, 1, 2, 3]
   },
   likes: {
-    type: Number,
+    type: [ObjectId],
     required: true,
-    default: 0
+    default: []
   },
   location: {
     type: {
@@ -71,6 +71,36 @@ ReportSchema.statics.updateStatus = async function (reportId, newStatus) {
     return Report.update({ _id: reportId }, { status: newStatus })
   } catch (err) {
     throw err
+  }
+}
+
+ReportSchema.statics.updateLikes = async function (userId, reportId) {
+  // Obtener reporte
+  const report = await Report.findById(reportId)
+
+  // Verificar que hay un reporte
+  if (report) {
+    let likes = report.likes
+
+    // Eliminar likes del reporte
+    report.likes = []
+    await report.save()
+
+    if (likes.indexOf(userId) !== -1) {
+      // Eliminar like del usuario
+      const likeIndex = likes.indexOf(userId)
+      likes.splice(likeIndex, 1)
+    } else {
+      likes.push(userId)
+    }
+
+    // Reasignar grupos
+    report.likes = likes
+    const result = await report.save()
+
+    return result.likes
+  } else {
+    throw new Error('El reporte buscado ya no existe')
   }
 }
 

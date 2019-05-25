@@ -99,4 +99,20 @@ router.post('/:id/update-status', jwt(auth.config), guard.check(['admin:normal']
   }
 })
 
+// Actualizar el número de likes
+// Sólo los usuarios pueden acceder a esta ruta
+router.get('/:id/update-likes', jwt(auth.config), guard.check(['user:normal']), async function (req, res, next) {
+  // Obtener parámetros
+  const userId = req.user.auth.id
+  const reportId = req.params.id
+
+  try {
+    // Actualizar likes
+    const result = await Report.updateLikes(userId, reportId)
+    res.send(result)
+  } catch (err) {
+    next(err)
+  }
+})
+
 module.exports = router
