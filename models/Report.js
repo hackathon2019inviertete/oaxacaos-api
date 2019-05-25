@@ -28,7 +28,7 @@ const ReportSchema = new mongoose.Schema({
   user_id: {
     type: {
       user_id: ObjectId,
-      require: true
+      required: true
     }
   },
   status: {
@@ -36,6 +36,10 @@ const ReportSchema = new mongoose.Schema({
     enum: [0, 1, 2], // 0: pendiente 1: en revisión 2: resuelto
     required: true,
     default: 0
+  },
+  address: {
+    type: String,
+    required: true
   }
 },
   {

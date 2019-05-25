@@ -6,10 +6,17 @@ const jwt = require('express-jwt')
 const auth = require('../helper/auth')
 const guard = require('express-jwt-permissions')()
 const Report = require('../models/Report')
+const maps = require('@google/maps')
 const Denuncia = require('../models/Denuncia')
 
 // Crear Router de express
 const router = express.Router()
+
+// Configurar Google Maps
+const mapsClient = maps.createClient({
+  key: process.env.GOOGLE_MAPS_API_KEY,
+  Promise: Promise
+})
 
 // Ruta para crear un nuevo reporte
 // Sólo los usuarios registrados pueden acceder a esta ruta
@@ -22,6 +29,15 @@ router.post('/', jwt(auth.config), async function (req, res, next) {
 
   // Verificar que existan los datos
   if (report_type && latitude && longitude && user_id) {
+    let address
+
+    // Generar dirección
+    const response = await mapsClient.reverseGeocode({
+      latlng: [parseFloat(latitude), parseFloat(longitude)]
+    }).asPromise()
+
+    address = response.json.results[0].formatted_address
+
     try {
       // Crear reporte
       const report = await Report.create({
@@ -29,6 +45,7 @@ router.post('/', jwt(auth.config), async function (req, res, next) {
         location: {
           coordinates: [longitude, latitude]
         },
+        address,
         user_id
       })
 

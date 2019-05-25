@@ -2,11 +2,19 @@
 
 const express = require("express")
 const router = express.Router()
+const maps = require('@google/maps')
 const Denuncia = require('../models/Denuncia')
 
 const jwt = require('express-jwt')
 const auth = require('../helper/auth')
 const guard = require('express-jwt-permissions')()
+
+// Configurar Google Maps
+const mapsClient = maps.createClient({
+  key: process.env.GOOGLE_MAPS_API_KEY,
+  Promise: Promise
+})
+
 
 router.post('/', jwt(auth.config), guard.check(['user:normal']), async function (req, res) {
   // Obtener parámetros
@@ -17,13 +25,23 @@ router.post('/', jwt(auth.config), guard.check(['user:normal']), async function 
 
   // Asegurarse de que existan los datos
   if (latitude && longitude && userId && audioUrl) {
+    let address
+
+    // Generar dirección
+    const response = await mapsClient.reverseGeocode({
+      latlng: [parseFloat(latitude), parseFloat(longitude)]
+    }).asPromise()
+
+    address = response.json.results[0].formatted_address
+
     // Almacenar denuncia
     const storedDenuncia = await Denuncia.create({
       location: {
         coordinates: [longitude, latitude]
       },
       user_id: userId,
-      record_audio_url: audioUrl
+      record_audio_url: audioUrl,
+      address
     })
 
     res.send(storedDenuncia)
