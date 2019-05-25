@@ -81,7 +81,7 @@ router.get('/:id', jwt(auth.config), async function (req, res, next) {
 // Sólo los administradores pueden acceder a esta ruta
 router.post('/:id/status', jwt(auth.config), guard.check(['user:admin']), async function (req, res, next) {
   // Obtener propiedades
-  const newStatus = req.body.status
+  const newStatus = req.body.status || req.body.data.status
 
   console.log(newStatus)
 
