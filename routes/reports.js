@@ -33,7 +33,7 @@ router.post('/', jwt(auth.config), async function (req, res, next) {
   console.log(user_id)
 
   // Verificar que existan los datos
-  if (report_type && latitude && longitude && user_id) {
+  if (latitude && longitude && user_id) {
     let address
 
     // Generar dirección
